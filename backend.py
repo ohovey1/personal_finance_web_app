@@ -9,7 +9,7 @@ class User:
         self.email = email
         self.password = password
         self.logged_in = False
-        self.portfolio = Portfolio()  # type: Portfolio
+        self.portfolio = Portfolio()  # Composition: User owns a Portfolio. Stores Account objects which store Assets
 
     def register(self):
         pass
@@ -23,108 +23,220 @@ class User:
     def delete_account(self):
         pass
 
-    def view_portfolio(self):
-        pass
-
-    def view_asset_portfolio(self, asset):
-        pass
-
-    def add_asset_to_portfolio(self, asset_type, *args, **kwargs):
-        asset = AssetFactory.create_asset(asset_type, *args, **kwargs)
-        self.portfolio.add_asset(asset)
-
-    def remove_asset_from_portfolio(self, asset_id):
-        pass
+    def create_account(self, account_type, *args, **kwargs):
+        account = AccountFactory.create_account(account_type, *args, **kwargs)
+        self.portfolio.add_account(account)
+    
+    def add_asset_to_account(self, account_type, asset_type, *args, **kwargs):
+        account = self.portfolio.get_account(account_type)
+        if account:
+            asset = AssetFactory.create_asset(asset_type, *args, **kwargs)
+            account.add_asset(asset)
 
     def get_portfolio_summary(self):
         pass
 
+
 # Portfolio class
 class Portfolio:
     def __init__(self):
-        self.assets = []
+        self.accounts = {}  # Using a dictionary to store accounts by type
 
-    def add_asset(self, asset):
-        self.assets.append(asset)
+    def add_account(self, account):
+        self.accounts[account.__class__.__name__] = account
 
-    def remove_asset(self, asset_id):
-        pass
+    def get_account(self, account_type):
+        return self.accounts.get(account_type)
 
-    def calculate_value(self):
+    def calculate_total_value(self):
         pass
 
     def get_asset_breakdown(self):
         pass
 
-    def get_asset_breakdown_by_type(self, asset_type):
+# Abstract Account class
+class Account(ABC):
+    def __init__(self, name):
+        self.name = name
+        self.holdings = []  # List of assets held by this account
+
+    @abstractmethod
+    def calculate_value(self):
         pass
+
+    @abstractmethod
+    def add_asset(self, asset):
+        pass
+
+    @abstractmethod
+    def remove_asset(self, asset):
+        pass
+
+
+# BankAccount class
+class BankAccount(Account):
+    def __init__(self, name, account_number, balance, bank_name):
+        super().__init__(name)
+        self.account_number = account_number
+        self.balance = balance
+        self.bank_name = bank_name
+
+    def calculate_value(self):
+        # The total value of a BankAccount could be the balance.
+        return self.balance
+
+    def add_asset(self, asset):
+        self.holdings.append(asset)
+
+    def remove_asset(self, asset):
+        self.holdings.remove(asset)
+
+    def get_balance(self):
+        return self.balance
+
+    def deposit(self, amount):
+        self.balance += amount
+
+    def withdraw(self, amount):
+        if amount <= self.balance:
+            self.balance -= amount
+
+
+# CheckingAccount class
+class CheckingAccount(BankAccount):
+    def __init__(self, name, account_number, balance, bank_name, overdraft_limit):
+        super().__init__(name, account_number, balance, bank_name)
+        self.overdraft_limit = overdraft_limit
+
+    def withdraw(self, amount):
+        if amount <= self.balance + self.overdraft_limit:
+            self.balance -= amount
+
+
+# SavingsAccount class
+class SavingsAccount(BankAccount):
+    def __init__(self, name, account_number, balance, bank_name, interest_rate):
+        super().__init__(name, account_number, balance, bank_name)
+        self.interest_rate = interest_rate
+
+    def apply_interest(self):
+        self.balance += self.balance * self.interest_rate
+
+
+# StockAccount class
+class StockAccount(Account):
+    def __init__(self, name, account_number):
+        super().__init__(name)
+        self.account_number = account_number
+
+    def calculate_value(self):
+        # Sum the value of all stocks in this account
+        return sum(asset.calculate_total_value() for asset in self.holdings)
+
+    def add_asset(self, asset):
+        self.holdings.append(asset)
+
+    def remove_asset(self, asset):
+        self.holdings.remove(asset)
+
+
+# RealEstateAccount class
+class RealEstateAccount(Account):
+    def __init__(self, name, account_type):
+        super().__init__(name)
+        self.account_type = account_type
+
+    def calculate_value(self):
+        # Sum the value of all real estate assets in this account
+        return sum(asset.calculate_total_value() for asset in self.holdings)
+
+    def add_asset(self, asset):
+        self.holdings.append(asset)
+
+    def remove_asset(self, asset):
+        self.holdings.remove(asset)
+
+
+# CryptoAccount class
+class CryptoAccount(Account):
+    def __init__(self, name, account_number):
+        super().__init__(name)
+        self.account_number = account_number
+
+    def calculate_value(self):
+        # Sum the value of all crypto assets in this account
+        return sum(asset.calculate_total_value() for asset in self.holdings)
+
+    def add_asset(self, asset):
+        self.holdings.append(asset)
+
+    def remove_asset(self, asset):
+        self.holdings.remove(asset)
 
 
 # Abstract Asset class
 class Asset(ABC):
-    def __init__(self, asset_id, name, value, purchase_date, user_id, owner):
+    def __init__(self, asset_id, name, value, purchase_date):
         self.asset_id = asset_id
         self.name = name
         self.value = value
         self.purchase_date = purchase_date
-        self.user_id = user_id
-        self.owner = owner
 
     @abstractmethod
-    def calculate_value(self):
+    def calculate_total_value(self):
         pass
 
     def update_value(self, new_value):
         pass
 
 
-# Concrete Stock class
+# Stock class
 class Stock(Asset):
-    def __init__(self, asset_id, name, value, purchase_date, user_id, owner, ticker, shares, purchase_price):
-        super().__init__(asset_id, name, value, purchase_date, user_id, owner)
+    def __init__(self, asset_id, name, value, purchase_date, ticker, shares, purchase_price):
+        super().__init__(asset_id, name, value, purchase_date)
         self.ticker = ticker
         self.shares = shares
         self.purchase_price = purchase_price
 
-    def calculate_value(self):
+    def calculate_total_value(self):
         pass
 
 
-# Concrete RealEstate class
+# RealEstate class
 class RealEstate(Asset):
-    def __init__(self, asset_id, name, value, purchase_date, user_id, owner, location, purchase_price, current_value):
-        super().__init__(asset_id, name, value, purchase_date, user_id, owner)
+    def __init__(self, asset_id, name, value, purchase_date, location, purchase_price, current_value):
+        super().__init__(asset_id, name, value, purchase_date)
         self.location = location
         self.purchase_price = purchase_price
         self.current_value = current_value
 
-    def calculate_value(self):
+    def calculate_total_value(self):
         pass
 
 
-# Concrete Crypto class
+# Crypto class
 class Crypto(Asset):
-    def __init__(self, asset_id, name, value, purchase_date, user_id, owner, ticker, units_held, purchase_price):
-        super().__init__(asset_id, name, value, purchase_date, user_id, owner)
+    def __init__(self, asset_id, name, value, purchase_date, ticker, units_held, purchase_price):
+        super().__init__(asset_id, name, value, purchase_date)
         self.ticker = ticker
         self.units_held = units_held
         self.purchase_price = purchase_price
 
-    def calculate_value(self):
+    def calculate_total_value(self):
         pass
 
 
-# Concrete Cash class
+# Cash class
 class Cash(Asset):
-    def __init__(self, asset_id, name, value, purchase_date, user_id, owner, currency, location):
-        super().__init__(asset_id, name, value, purchase_date, user_id, owner)
+    def __init__(self, asset_id, name, value, purchase_date, currency):
+        super().__init__(asset_id, name, value, purchase_date)
         self.currency = currency
-        self.location = location
 
-    def calculate_value(self):
+    def calculate_total_value(self):
         pass
 
-# AssetFactory class for easy Asset creation
+
+# AssetFactory class
 class AssetFactory:
     @staticmethod
     def create_asset(asset_type, *args, **kwargs):
@@ -140,111 +252,22 @@ class AssetFactory:
             raise ValueError(f"Unknown asset type: {asset_type}")
 
 
-# Abstract Account class
-class Account(ABC):
-    def __init__(self, name, value):
-        self.name = name
-        self.value = value
-        self.holdings = []
-
-    @abstractmethod
-    def calculate_value(self):
-        pass
-
-    @abstractmethod
-    def add_asset(self, asset):
-        pass
-
-    @abstractmethod
-    def remove_asset(self, asset):
-        pass
-
-
-# Concrete BankAccount class
-class BankAccount(Account):
-    def __init__(self, name, value, account_number, balance, account_holder, bank_name):
-        super().__init__(name, value)
-        self.account_number = account_number
-        self.balance = balance
-        self.account_holder = account_holder
-        self.bank_name = bank_name
-
-    def get_balance(self):
-        pass
-
-    def deposit(self, amount):
-        pass
-
-    def withdraw(self, amount):
-        pass
-
-
-# CheckingAccount class, inheriting from BankAccount
-class CheckingAccount(BankAccount):
-    def __init__(self, name, value, account_number, balance, account_holder, bank_name, overdraft_limit):
-        super().__init__(name, value, account_number, balance, account_holder, bank_name)
-        self.overdraft_limit = overdraft_limit
-
-    def withdraw(self, amount):
-        pass
-
-
-# SavingsAccount class, inheriting from BankAccount
-class SavingsAccount(BankAccount):
-    def __init__(self, name, value, account_number, balance, account_holder, bank_name, interest_rate):
-        super().__init__(name, value, account_number, balance, account_holder, bank_name)
-        self.interest_rate = interest_rate
-
-    def apply_interest(self):
-        pass
-
-
-# Concrete StockAccount class
-class StockAccount(Account):
-    def __init__(self, name, value, account_number):
-        super().__init__(name, value)
-        self.account_number = account_number
-
-    def calculate_value(self):
-        pass
-
-    def add_asset(self, asset):
-        pass
-
-    def remove_asset(self, asset):
-        pass
-
-
-# Concrete RealEstateAccount class
-class RealEstateAccount(Account):
-    def __init__(self, name, value, account_type):
-        super().__init__(name, value)
-        self.account_type = account_type
-
-    def calculate_value(self):
-        pass
-
-    def add_asset(self, asset):
-        pass
-
-    def remove_asset(self, asset):
-        pass
-
-
-# Concrete CryptoAccount class
-class CryptoAccount(Account):
-    def __init__(self, name, value, account_number):
-        super().__init__(name, value)
-        self.account_number = account_number
-
-    def calculate_value(self):
-        pass
-
-    def add_asset(self, asset):
-        pass
-
-    def remove_asset(self, asset):
-        pass
+# AccountFactory class
+class AccountFactory:
+    @staticmethod
+    def create_account(account_type, *args, **kwargs):
+        if account_type == "stock":
+            return StockAccount(*args, **kwargs)
+        elif account_type == "realestate":
+            return RealEstateAccount(*args, **kwargs)
+        elif account_type == "crypto":
+            return CryptoAccount(*args, **kwargs)
+        elif account_type == "checking":
+            return CheckingAccount(*args, **kwargs)
+        elif account_type == "savings":
+            return SavingsAccount(*args, **kwargs)
+        else:
+            raise ValueError(f"Unknown account type: {account_type}")
 
 
 # Singleton DB Connection class, 
