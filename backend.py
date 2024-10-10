@@ -28,10 +28,8 @@ class User:
         self.portfolio.add_account(account)
     
     def add_asset_to_account(self, account_type, asset_type, *args, **kwargs):
-        account = self.portfolio.get_account(account_type)
-        if account:
-            asset = AssetFactory.create_asset(asset_type, *args, **kwargs)
-            account.add_asset(asset)
+        asset = AssetFactory.create_asset(asset_type, *args, **kwargs)
+        pass
 
     def get_portfolio_summary(self):
         pass
@@ -40,7 +38,7 @@ class User:
 # Portfolio class
 class Portfolio:
     def __init__(self):
-        self.accounts = []  # Using a dictionary to store accounts by type
+        self.accounts = []  # List that stores accounts
 
     def add_account(self, account):
         pass
