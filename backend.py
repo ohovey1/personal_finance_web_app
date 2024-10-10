@@ -40,13 +40,12 @@ class User:
 # Portfolio class
 class Portfolio:
     def __init__(self):
-        self.accounts = {}  # Using a dictionary to store accounts by type
+        self.accounts = []  # Using a dictionary to store accounts by type
 
     def add_account(self, account):
-        self.accounts[account.__class__.__name__] = account
-
+        pass
     def get_account(self, account_type):
-        return self.accounts.get(account_type)
+        pass
 
     def calculate_total_value(self):
         pass
@@ -60,9 +59,9 @@ class Account(ABC):
         self.name = name
         self.holdings = []  # List of assets held by this account
 
-    @abstractmethod
     def calculate_value(self):
-        pass
+        # Calculate the total value of all assets in the account using polymorphism
+        return sum(asset.calculate_value() for asset in self.holdings)
 
     @abstractmethod
     def add_asset(self, asset):
@@ -82,7 +81,7 @@ class BankAccount(Account):
         self.bank_name = bank_name
 
     def calculate_value(self):
-        # The total value of a BankAccount could be the balance.
+        # For bank accounts, value is the balance
         return self.balance
 
     def add_asset(self, asset):
@@ -90,9 +89,6 @@ class BankAccount(Account):
 
     def remove_asset(self, asset):
         self.holdings.remove(asset)
-
-    def get_balance(self):
-        return self.balance
 
     def deposit(self, amount):
         self.balance += amount
@@ -129,10 +125,6 @@ class StockAccount(Account):
         super().__init__(name)
         self.account_number = account_number
 
-    def calculate_value(self):
-        # Sum the value of all stocks in this account
-        return sum(asset.calculate_total_value() for asset in self.holdings)
-
     def add_asset(self, asset):
         self.holdings.append(asset)
 
@@ -145,10 +137,6 @@ class RealEstateAccount(Account):
     def __init__(self, name, account_type):
         super().__init__(name)
         self.account_type = account_type
-
-    def calculate_value(self):
-        # Sum the value of all real estate assets in this account
-        return sum(asset.calculate_total_value() for asset in self.holdings)
 
     def add_asset(self, asset):
         self.holdings.append(asset)
@@ -163,10 +151,6 @@ class CryptoAccount(Account):
         super().__init__(name)
         self.account_number = account_number
 
-    def calculate_value(self):
-        # Sum the value of all crypto assets in this account
-        return sum(asset.calculate_total_value() for asset in self.holdings)
-
     def add_asset(self, asset):
         self.holdings.append(asset)
 
@@ -176,14 +160,13 @@ class CryptoAccount(Account):
 
 # Abstract Asset class
 class Asset(ABC):
-    def __init__(self, asset_id, name, value, purchase_date):
+    def __init__(self, asset_id, name, purchase_date):
         self.asset_id = asset_id
         self.name = name
-        self.value = value
         self.purchase_date = purchase_date
 
     @abstractmethod
-    def calculate_total_value(self):
+    def calculate_value(self):
         pass
 
     def update_value(self, new_value):
@@ -192,49 +175,62 @@ class Asset(ABC):
 
 # Stock class
 class Stock(Asset):
-    def __init__(self, asset_id, name, value, purchase_date, ticker, shares, purchase_price):
-        super().__init__(asset_id, name, value, purchase_date)
+    def __init__(self, asset_id, name, purchase_date, ticker, shares, purchase_price):
+        super().__init__(asset_id, name, purchase_date)
         self.ticker = ticker
         self.shares = shares
         self.purchase_price = purchase_price
 
-    def calculate_total_value(self):
+    def get_current_stock_price(self):
+        # TODO: Get price from stock API
         pass
 
+    def calculate_value(self):
+        # Calculate using current stock value
+        current_price = self.get_current_stock_price()
+        return current_price * self.shares
 
 # RealEstate class
 class RealEstate(Asset):
-    def __init__(self, asset_id, name, value, purchase_date, location, purchase_price, current_value):
-        super().__init__(asset_id, name, value, purchase_date)
+    def __init__(self, asset_id, name, purchase_date, location, purchase_price, current_value):
+        super().__init__(asset_id, name, purchase_date)
         self.location = location
         self.purchase_price = purchase_price
         self.current_value = current_value
 
-    def calculate_total_value(self):
-        pass
+    def calculate_value(self):
+        # Use current value of property
+        return self.current_value
 
 
 # Crypto class
 class Crypto(Asset):
-    def __init__(self, asset_id, name, value, purchase_date, ticker, units_held, purchase_price):
-        super().__init__(asset_id, name, value, purchase_date)
+    def __init__(self, asset_id, name, purchase_date, ticker, units_held, purchase_price):
+        super().__init__(asset_id, name, purchase_date)
         self.ticker = ticker
         self.units_held = units_held
         self.purchase_price = purchase_price
 
-    def calculate_total_value(self):
-        pass
+    def get_current_crypto_price(self):
+        # TODO: Get current price from some crypto API
+        pass  
+
+    def calculate_value(self):
+        # Get total value of crypto held
+        current_price = self.get_current_crypto_price()
+        return current_price * self.units_held
 
 
 # Cash class
 class Cash(Asset):
-    def __init__(self, asset_id, name, value, purchase_date, currency):
-        super().__init__(asset_id, name, value, purchase_date)
+    def __init__(self, asset_id, name, purchase_date, currency, amount):
+        super().__init__(asset_id, name, purchase_date)
         self.currency = currency
+        self.amount = amount
 
-    def calculate_total_value(self):
-        pass
-
+    def calculate_value(self):
+        # Cash value is equal to amount
+        return self.amount
 
 # AssetFactory class
 class AssetFactory:
