@@ -1,7 +1,26 @@
 from abc import ABC, abstractmethod
 from datetime import date
 
-# User class
+'''
+User class. Represents a user of the application.
+
+Attributes:
+    user_id (int): Unique identifier for user
+    name (str): Name of user
+    email (str): Email of user
+    password (str): Password of user
+    logged_in (bool): True if user is logged in, False otherwise
+    portfolio (Portfolio): Portfolio object that stores Account objects
+
+Methods:
+    register(): Register user to database
+    login(email, password): Check if email and password match database. If match, set logged_in to True
+    update_profile(new_name, new_email): Update user profile in database
+    delete_account(): Delete user account from database
+    create_account(account_type, *args, **kwargs): Create an account of specified type and add to portfolio
+    add_asset_to_account(account_id, asset_type, *args, **kwargs): Add asset to account in portfolio
+    view_portfolio_summary(): Display portfolio summary
+'''
 class User:
     def __init__(self, user_id, name, email, password):
         self.user_id = user_id
@@ -35,13 +54,28 @@ class User:
     
     def add_asset_to_account(self, account_id, asset_type, *args, **kwargs):
         asset = AssetFactory.create_asset(asset_type, *args, **kwargs)
-        pass
+        self.portfolio.accounts[account_id].add_asset(asset)
 
     def view_portfolio_summary(self):
         # TODO: Display portfolio summary
-        pass
+        self.portfolio.view_summary()
 
-# Abstract Asset class
+'''
+Asset class. Abstract base class for different types of assets.
+
+Attributes:
+    name (str): Name of asset
+    purchase_date (date): Date asset was purchased (set to today by default)
+
+Methods:
+    calculate_value(): Abstract method to calculate value of asset
+
+Concrete Asset classes:
+    Stock: Represents a stock asset
+    RealEstate: Represents a real estate asset
+    Crypto: Represents a cryptocurrency asset
+    Cash: Represents a cash asset
+'''
 # NOTE: asset_id managed by Account.holdings dictionary
 class Asset(ABC):
     def __init__(self, name):
@@ -115,8 +149,27 @@ class Cash(Asset):
         # Cash value is equal to amount
         return self.amount
 
+'''
+Account class. Abstract base class for different types of accounts.
 
-# Abstract Account class
+Attributes:
+    name (str): Name of account
+    holdings (dict): Dictionary of assets held by this account, asset_id as key
+
+Methods:
+    calculate_value(): Abstract method to calculate total value of account
+    add_asset(asset): Abstract method to add asset to account
+    remove_asset(asset): Abstract method to remove asset from account
+    view_account(): Display account details
+
+Concrete Account classes:
+    BankAccount: Represents a bank account
+    CheckingAccount: Represents a checking account, derived from BankAccount
+    SavingsAccount: Represents a savings account, derived from BankAccount
+    StockAccount: Represents a stock trading account
+    RealEstateAccount: Represents a real estate account
+    CryptoAccount: Represents a cryptocurrency trading account
+'''
 class Account(ABC):
     def __init__(self, name):
         self.name = name
@@ -272,6 +325,18 @@ class CryptoAccount(Account):
     def remove_asset(self, asset_id):
         self.holdings.pop(asset_id)
 
+'''
+Factory classes for creating Asset and Account objects.
+
+Asset Factory Parameters:
+    asset_type (str): Type of asset to create, must be one of 'stock', 'realestate', 'crypto', 'cash'
+
+Account Factory Parameters:
+    account_type (str): Type of account to create, must be one of 'stock', 'realestate', 'crypto', 'checking', 'savings'
+
+Returns an instance of the specified class.
+'''
+
 # AssetFactory class
 class AssetFactory:
     @staticmethod
@@ -285,8 +350,7 @@ class AssetFactory:
         elif asset_type == "cash":
             return Cash(*args, **kwargs)
         else:
-            raise ValueError(f"Unknown asset type: {asset_type}")
-
+            raise ValueError(f"Unknown asset type: {asset_type}. Must be one of 'stock', 'realestate', 'crypto', 'cash'")
 
 # AccountFactory class
 class AccountFactory:
@@ -303,8 +367,19 @@ class AccountFactory:
         elif account_type == "savings":
             return SavingsAccount(*args, **kwargs)
         else:
-            raise ValueError(f"Unknown account type: {account_type}")
+            raise ValueError(f"Unknown account type: {account_type}. Must be one of 'stock', 'realestate', 'crypto', 'checking', 'savings'")
 
+
+'''
+Portfolio class. Represents a collection of accounts containing all the users assets.
+
+Attributes:
+    accounts (dict): Dictionary of accounts, account_id as key
+
+Methods:
+    add_account(account): Add account to portfolio
+    remove_account(account_id): Remove account from portfolio
+'''
 class Portfolio:
     def __init__(self):
         self.accounts = {}  # Dictionary of accounts
@@ -330,7 +405,9 @@ class Portfolio:
         #TODO: Implement summary view
         pass
 
-# Singleton DB Connection class, 
+'''
+Singleton class for managing database connection.
+'''
 class DatabaseConnection:
     _instance = None
 
