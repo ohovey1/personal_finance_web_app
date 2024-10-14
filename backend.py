@@ -43,22 +43,35 @@ class User:
         #TODO: Update user profile in database
         self.name = new_name
         self.email = new_email
+        self.display_user()
 
     def delete_account(self):
         #TODO: Delete user account from database
         pass
 
+    # Create account using AccountFactory
     def create_account(self, account_type, *args, **kwargs):
         account = AccountFactory.create_account(account_type, *args, **kwargs)
         self.portfolio.add_account(account)
     
+    # Add asset to account using AssetFactory
     def add_asset_to_account(self, account_id, asset_type, *args, **kwargs):
         asset = AssetFactory.create_asset(asset_type, *args, **kwargs)
         self.portfolio.accounts[account_id].add_asset(asset)
 
-    def view_portfolio_summary(self):
-        # TODO: Display portfolio summary
-        self.portfolio.view_summary()
+    def display_user(self):
+        print(f"User ID: {self.user_id}")
+        print(f"Name: {self.name}")
+        print(f"Email: {self.email}")
+        print(f"Logged In: {self.logged_in}")
+        print("\n")
+
+    def display_accounts(self):
+        self.portfolio.view_accounts()
+    
+    def display_portfolio(self):
+        self.portfolio.view_detailed_summary()
+
 
 '''
 Asset class. Abstract base class for different types of assets.
@@ -220,7 +233,7 @@ class BankAccount(Account):
         self.holdings[asset_id] = asset # Add asset to holdings w/ asset id 1
 
     def remove_asset(self, asset):
-        # remove asset from holdings dictionary
+        # remove asset from holdings dictionary **SHOULD NOT BE CALLED**
         self.holdings.pop(0)
 
     def deposit(self, amount):
@@ -392,18 +405,27 @@ class Portfolio:
     def remove_account(self, account_id):
         # Remove account from portfolio
         del self.accounts[account_id]
+    
+    def calculate_total_value(self):
+        # Calculate total value of portfolio
+        total_value = 0
+        for account in self.accounts.values():
+            total_value += account.calculate_value()
+        return total_value
 
     def view_accounts(self):
         # Display all accounts in portfolio
         for account_id, account in self.accounts.items():
             print(f"Account ID: {account_id}")
-            print(f"Account Type: {account.name}")
-            print("\n")
-            #account.view_account()
+            print(f"Account Type: {account.account_type}")
+            print(f"Account Name: {account.name}")
 
-    def view_summary(self):
-        #TODO: Implement summary view
-        pass
+    def view_detailed_summary(self):
+        for account_id, account in self.accounts.items():
+            print(f"Account ID: {account_id}")
+            account.view_account()
+        print(f"Total Portfolio Value: {self.calculate_total_value()}\n")
+
 
 '''
 Singleton class for managing database connection.
