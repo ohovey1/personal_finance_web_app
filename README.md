@@ -12,3 +12,22 @@ the base logic. The additional areas of financial data would be handled in an an
 with specific alterations to handle the unique nature of each category. As we move to build this,
 it is highly probable this will be expanded upon with the specific implementation of OOP being
 adapted as we progress into the project.
+
+## OOP Design
+
+Classes are broken down into the following
+
+1. User class - 
+2. Portfolio class - 
+3. Account parent class (abstract), with following subclasses 
+    - StockAccount
+    - RealEstateAccount
+    - CryptoAccount
+    - BankAccount
+4. Asset parent class (abstract), with following subclasses
+    - Stock
+    - RealEstate
+    - Crypto
+    - Cash
+5. DBManager class (singleton)
+6. Interface class
