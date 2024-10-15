@@ -17,8 +17,8 @@ adapted as we progress into the project.
 
 Classes are broken down into the following
 
-1. User class - 
-2. Portfolio class - 
+1. User class - user object that interacts with app. Handles all actions such as adding accounts, adding assets, etc.
+2. Portfolio class - portfolio that stores accounts created by User
 3. Account parent class (abstract), with following subclasses 
     - StockAccount
     - RealEstateAccount
@@ -29,5 +29,38 @@ Classes are broken down into the following
     - RealEstate
     - Crypto
     - Cash
-5. DBManager class (singleton)
-6. Interface class
+5. AccountFactory - for account creation
+6. AssetFactory - for asset creation
+7. Interface class - CLI for user interaction
+8. DBManager class (singleton) - not yet implemented
+
+A User object owns a singular Portfolio by composition. Then, the Portfolio can be populated by User created Accounts. Once an Account is created, a User defined Asset can be added to the Account. All actions are handled by the User class.
+
+## Installation and running
+
+To run this application, simply clone the repository and run the following command:
+
+        python main.py
+
+This calls the main_loop in the command line interface, which shows the programs functionality.
+
+## Current Working Features for Mini Project
+
+1. Register User
+2. Create Account
+3. Add Assets to Account
+4. View Portfolio
+
+## Design Patterns Used
+
+1. Factory Method Pattern - for Asset and Account creation
+2. Composition - exists between Portfolio and User objects
+3. Aggregation - exists between Assets and Accounts, as well as Accounts and Portfolio
+4. Singleton Patter - for DB manager (not yet implemented)
+
+## Features to Implement for Final Project
+
+1. Database Integration (PostgreSQL)
+2. User friendly UI
+3. API integration for calculating real time stock, crypto, and real estate prices
+4. Better Error Handling (i.e., don't allow user to add asset to non-existent account)

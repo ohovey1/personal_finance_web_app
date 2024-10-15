@@ -37,7 +37,7 @@ class Interface:
             print('4. Display Portfolio')
             print('5. Exit\n')
 
-            option = input('Enter option: ')
+            option = input('Enter option: \n')
             if option == '1':
                 print('Select an account type:\n')
                 print('1. Checkings Bank Account')
