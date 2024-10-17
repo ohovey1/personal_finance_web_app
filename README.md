@@ -36,6 +36,8 @@ Classes are broken down into the following
 
 A User object owns a singular Portfolio by composition. Then, the Portfolio can be populated by User created Accounts. Once an Account is created, a User defined Asset can be added to the Account. All actions are handled by the User class.
 
+![alt text](images/uml_diagram.jpeg)
+
 ## Installation and running
 
 To run this application, simply clone the repository and run the following command:
@@ -64,3 +66,4 @@ This calls the main_loop in the command line interface, which shows the programs
 2. User friendly UI
 3. API integration for calculating real time stock, crypto, and real estate prices
 4. Better Error Handling (i.e., don't allow user to add asset to non-existent account)
+
