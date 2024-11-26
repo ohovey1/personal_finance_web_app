@@ -213,10 +213,9 @@ class Account(ABC):
             print(f"Value: {asset.calculate_value()}")
             print("\n")
 
-# Concrete Account classes.
+## Concrete Account classes.
 
 # BankAccount class.
-# Inherits from Account class
 class BankAccount(Account):
     def __init__(self, name, bank_name):
         super().__init__(name)
@@ -249,7 +248,7 @@ class BankAccount(Account):
         print("Insufficient funds.")
 
 
-# CheckingAccount class
+## CheckingAccount class
 class CheckingAccount(BankAccount):
     def __init__(self, name, bank_name, overdraft_limit):
         super().__init__(name, bank_name)
@@ -264,7 +263,7 @@ class CheckingAccount(BankAccount):
             return
         print("Insufficient funds.") 
 
-# SavingsAccount class
+## SavingsAccount class
 class SavingsAccount(BankAccount):
     def __init__(self, name, bank_name, interest_rate):
         super().__init__(name, bank_name)
