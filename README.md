@@ -50,14 +50,13 @@ Classes are organized as follows:
 1. User class - Manages user authentication and portfolio interactions
 2. Portfolio class - Contains and manages multiple account types
 3. Account class hierarchy:
-
-- Abstract Account base class
-- StockAccount - For managing stock investments
-- RealEstateAccount - For managing property investments
-- CryptoAccount - For managing cryptocurrency
-- BankAccount - Base class for banking accounts
-        - CheckingAccount
-        - SavingsAccount
+        - Abstract Account base class
+        - StockAccount - For managing stock investments
+        - RealEstateAccount - For managing property investments
+        - CryptoAccount - For managing cryptocurrency
+        - BankAccount - Base class for banking accounts
+                - CheckingAccount
+                - SavingsAccount
 
 4. Asset class hierarchy:
 
@@ -134,3 +133,4 @@ Uses PostgreSQL with the following structure:
 2. Add visualizations for portfolio
 3. Add API integration for real time stock and crypto prices
 4. Enhance UI
+5. Other design patterns? Maybe observer
