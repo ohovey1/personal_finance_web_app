@@ -70,10 +70,10 @@ Classes are organized as follows:
 A User object owns a singular Portfolio by composition. Then, the Portfolio can be populated by User created Accounts. Once an Account is created, a User defined Asset can be added to the Account. All actions are handled by the User class.
 
 User flow:
-
+'''
 Home Page → View Portfolio → Add Account → Add Asset
                 ↑_______________←______________↲
-
+'''
 ![alt text](images/uml_diagram.jpeg)
 
 
