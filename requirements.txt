@@ -1,0 +1,4 @@
+Flask               # Web framework
+psycopg2-binary     # PostgreSQL adapter
+flask-login         # User session management
+python-dotenv       # Environment variable management

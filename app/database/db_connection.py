@@ -38,10 +38,11 @@ class DatabaseConnection:
             if query.lower().startswith('select'):
                 return self._cursor.fetchall()
             self._connection.commit()
-        except psycopg2.Error as e:
+            return self._cursor.fetchall() if self._cursor.description else True
+        except Exception as e:
             self._connection.rollback()
-            print(f"Error executing query: {e}")
-            raise
+            print(f"Query error: {str(e)}")
+            return None
 
     def close(self):
         """Close database connection"""
