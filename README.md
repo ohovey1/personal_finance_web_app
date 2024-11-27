@@ -122,8 +122,15 @@ Uses PostgreSQL with the following structure:
 
 4. Update config file and change DB_PASSWORD to your database password
 
-4. Run Application
+5. Run Application
 
         python run.py
 
-5. To clear database, run app/database/clear_db.sql in database query tools (see step 3)
+6. To clear database, run app/database/clear_db.sql in database query tools (see step 3)
+
+## Next Steps:
+
+1. Add remove accounts/assets feature
+2. Add visualizations for portfolio
+3. Add API integration for real time stock and crypto prices
+4. Enhance UI
