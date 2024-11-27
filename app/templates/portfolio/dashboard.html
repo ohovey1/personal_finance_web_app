@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Portfolio Dashboard</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            margin: 20px; 
+        }
+        .nav-links {
+            margin: 20px 0;
+        }
+        .account {
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+        .asset {
+            margin-left: 20px;
+            padding: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Your Portfolio</h1>
+
+    <div class="nav-links">
+        <a href="{{ url_for('portfolio.add_account') }}">Add Account</a>
+        <a href="{{ url_for('home') }}">Back to Home</a>
+    </div>
+
+    {% if current_user.portfolio.accounts %}
+        {% for account_id, account in current_user.portfolio.accounts.items() %}
+            <div class="account">
+                <h2>{{ account.name }} ({{ account.account_type }})</h2>
+                <a href="{{ url_for('portfolio.add_asset', account_id=account_id) }}">Add Asset</a>
+                
+                <h3>Assets:</h3>
+                {% if account.holdings %}
+                    {% for asset_id, asset in account.holdings.items() %}
+                        <div class="asset">
+                            <p>{{ asset.name }} - Value: ${{ "%.2f"|format(asset.calculate_value()) }}</p>
+                        </div>
+                    {% endfor %}
+                    <p>Total Account Value: ${{ "%.2f"|format(account.calculate_total_value()) }}</p>
+                {% else %}
+                    <p>No assets in this account</p>
+                {% endif %}
+            </div>
+        {% endfor %}
+        <h3>Total Portfolio Value: ${{ "%.2f"|format(current_user.portfolio.calculate_total_value()) }}</h3>
+    {% else %}
+        <p>No accounts yet. Add an account to get started!</p>
+    {% endif %}
+</body>
+</html>

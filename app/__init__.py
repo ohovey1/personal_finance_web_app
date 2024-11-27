@@ -18,18 +18,17 @@ def create_app():
 
     # User loader for Flask-Login
     from app.models.user import User
-
     @login_manager.user_loader
     def load_user(user_id):
-        return User.get_by_id(int(user_id))
+        return User.get_by_id(int(user_id)) if user_id else None
 
-    # Home route
+    # Register blueprints
+    from app.routes import auth_routes, portfolio_routes
+    app.register_blueprint(auth_routes.bp)
+    app.register_blueprint(portfolio_routes.bp)
+
     @app.route('/')
     def home():
         return render_template('home.html')
-
-    # Register blueprints
-    from app.routes import auth_routes
-    app.register_blueprint(auth_routes.bp)
 
     return app

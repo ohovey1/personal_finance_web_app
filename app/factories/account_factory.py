@@ -1,20 +1,25 @@
-from ..models.account import (BankAccount, CheckingAccount, 
-                            SavingsAccount, StockAccount, 
-                            RealEstateAccount, CryptoAccount)
+from typing import Optional
+from ..models.account import Account, StockAccount, CryptoAccount, BankAccount
 
 class AccountFactory:
     @staticmethod
-    def create_account(account_type, *args, **kwargs):
-        accounts = {
-            "stock": StockAccount,
-            "realestate": RealEstateAccount,
-            "crypto": CryptoAccount,
-            "checking": CheckingAccount,
-            "savings": SavingsAccount
-        }
+    def create_account(account_type: str, name: str) -> Optional[Account]:
+        """
+        Create an account of specified type.
         
-        account_class = accounts.get(account_type)
-        if not account_class:
-            raise ValueError(f"Unknown account type: {account_type}")
-            
-        return account_class(*args, **kwargs)
+        Args:
+            account_type: Type of account ('stock', 'crypto', 'bank')
+            name: Name of the account
+        """
+        try:
+            if account_type == "stock":
+                return StockAccount(name)
+            elif account_type == "crypto":
+                return CryptoAccount(name)
+            elif account_type == "bank":
+                return BankAccount(name)
+            else:
+                raise ValueError(f"Unknown account type: {account_type}")
+        except Exception as e:
+            print(f"Error creating account: {str(e)}")
+            return None

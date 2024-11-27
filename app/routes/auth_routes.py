@@ -7,7 +7,7 @@ bp = Blueprint('auth', __name__, url_prefix='/auth')
 @bp.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
-        return redirect(url_for('home'))
+        return redirect(url_for('portfolio.view_portfolio'))
         
     if request.method == 'POST':
         email = request.form.get('email')
@@ -16,8 +16,7 @@ def login():
         user = User.get_by_email(email)
         if user and user.verify_password(password):
             login_user(user)
-            user.update_last_login()
-            return redirect(url_for('home'))
+            return redirect(url_for('portfolio.view_portfolio'))
         
         return render_template('auth/login.html', error="Invalid email or password")
     
@@ -30,21 +29,17 @@ def register():
         email = request.form.get('email')
         password = request.form.get('password')
         
-        print(f"Registration attempt - Email: {email}")  # Debug
+        if User.get_by_email(email):
+            return render_template('auth/register.html', error="Email already registered")
         
         user = User(user_id=None, name=name, email=email)
-        save_success = user.save(password)
-        print(f"Save success: {save_success}, User ID: {user.id}")  # Debug
-        
-        if save_success:
-            login_success = login_user(user)
-            print(f"Login success: {login_success}")  # Debug
-            return redirect(url_for('home'))
+        if user.save(password):
+            login_user(user)
+            return redirect(url_for('portfolio.view_portfolio'))
         
         return render_template('auth/register.html', error="Could not create account")
-
+    
     return render_template('auth/register.html')
-
 
 @bp.route('/logout')
 def logout():

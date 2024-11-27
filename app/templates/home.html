@@ -1,18 +1,36 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Portfolio Management</title>
+    <title>Portfolio Manager</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            margin: 20px;
+            text-align: center;
+        }
+        .nav-links {
+            margin: 20px 0;
+        }
+        .nav-links a {
+            margin: 0 10px;
+            text-decoration: none;
+            color: blue;
+        }
+    </style>
 </head>
 <body>
-    <div>
-        {% if current_user.is_authenticated %}
-            <h1>Welcome, {{ current_user.name }}!</h1>
+    {% if current_user.is_authenticated %}
+        <h1>Welcome, {{ current_user.name }}!</h1>
+        <div class="nav-links">
+            <a href="{{ url_for('portfolio.view_portfolio') }}">View Portfolio</a>
             <a href="{{ url_for('auth.logout') }}">Logout</a>
-        {% else %}
-            <h1>Welcome to Portfolio Management</h1>
+        </div>
+    {% else %}
+        <h1>Welcome to Portfolio Manager</h1>
+        <div class="nav-links">
             <a href="{{ url_for('auth.login') }}">Login</a>
             <a href="{{ url_for('auth.register') }}">Register</a>
-        {% endif %}
-    </div>
+        </div>
+    {% endif %}
 </body>
 </html>
