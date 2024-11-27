@@ -40,6 +40,7 @@ project_root/
 │
 ├── config.py              # Configuration settings
 └── run.py                # Application entry point
+|__ requirements.txt
 ```
 
 ## OOP Design
