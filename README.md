@@ -5,7 +5,7 @@
 A web application that allows users to manage their financial portfolio, including stocks, real estate, cryptocurrency, and bank accounts. The system uses OOP principles for data organization and PostgreSQL for data persistence.
 
 ## Project Structure
-
+```
 project_root/
 │
 ├── app/
@@ -40,6 +40,7 @@ project_root/
 │
 ├── config.py              # Configuration settings
 └── run.py                # Application entry point
+```
 
 ## OOP Design
 
