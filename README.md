@@ -50,19 +50,22 @@ Classes are organized as follows:
 1. User class - Manages user authentication and portfolio interactions
 2. Portfolio class - Contains and manages multiple account types
 3. Account class hierarchy:
-        - Abstract Account base class
-        - StockAccount - For managing stock investments
-        - RealEstateAccount - For managing property investments
-        - CryptoAccount - For managing cryptocurrency
-        - BankAccount - Base class for banking accounts
-                - CheckingAccount
-                - SavingsAccount
+
+- Abstract Account base class
+- StockAccount - For managing stock investments
+- RealEstateAccount - For managing property investments
+- CryptoAccount - For managing cryptocurrency
+- BankAccount - Base class for banking accounts
+        - CheckingAccount
+        - SavingsAccount
+
 4. Asset class hierarchy:
-        - Abstract Asset base class
-        - Stock - Represents individual stock holdings
-        - RealEstate - Represents property investments
-        - Crypto - Represents cryptocurrency holdings
-        - Cash - Represents cash holdings
+
+- Abstract Asset base class
+- Stock - Represents individual stock holdings
+- RealEstate - Represents property investments
+- Crypto - Represents cryptocurrency holdings
+- Cash - Represents cash holdings
 
 A User object owns a singular Portfolio by composition. Then, the Portfolio can be populated by User created Accounts. Once an Account is created, a User defined Asset can be added to the Account. All actions are handled by the User class.
 
