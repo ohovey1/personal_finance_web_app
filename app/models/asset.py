@@ -22,6 +22,7 @@ class Stock(Asset):
         self.ticker = ticker
 
     def calculate_value(self) -> float:
+        #TODO: Add API integration to calculate real time price
         return self.units * self.current_price
 
 class Crypto(Asset):
@@ -30,6 +31,7 @@ class Crypto(Asset):
         self.ticker = ticker
 
     def calculate_value(self) -> float:
+        #TODO: Add API integration to calculate real time price
         return self.units * self.current_price
 
 class Cash(Asset):

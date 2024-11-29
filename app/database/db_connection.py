@@ -18,6 +18,7 @@ class DatabaseConnection:
     def _connect(self):
         """Establish database connection"""
         try:
+            # Connect using info from config file
             self._connection = psycopg2.connect(
                 dbname=Config.DB_NAME,
                 user=Config.DB_USER,

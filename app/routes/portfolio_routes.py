@@ -61,3 +61,21 @@ def add_asset(account_id):
                                 error="Could not add asset")
     
     return render_template('portfolio/add_asset.html', account_id=account_id)
+
+@bp.route('/remove_asset/<int:account_id>/<int:asset_id>', methods=['POST'])
+@login_required
+def remove_asset(account_id, asset_id):
+    """Removes asset from account"""
+    if account_id in current_user.portfolio.accounts:
+        account = current_user.portfolio.accounts[account_id]
+        if account.remove_asset(asset_id):
+            return redirect(url_for('portfolio.view_portfolio'))
+    return "Error removing asset", 400
+
+@bp.route('/remove_account/<int:account_id>', methods=['POST'])
+@login_required
+def remove_account(account_id):
+    """Remove an account from the portfolio"""
+    if current_user.portfolio.remove_account(account_id):
+        return redirect(url_for('portfolio.view_portfolio'))
+    return "Error removing account", 400

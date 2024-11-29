@@ -28,6 +28,18 @@ class Account(ABC):
             self.holdings[asset_id] = asset
             return asset_id
         return None
+    
+    def remove_asset(self, asset_id: int) -> bool:
+        """Remove asset from account and db"""
+        query = "DELETE FROM Assets WHERE asset_id = %s AND account_id = %s;"
+        try:
+            self.db.execute_query(query, (asset_id, self.account_id))
+            if asset_id in self.holdings:
+                del self.holdings[asset_id]
+            return True
+        except Exception as e:
+            print(f"Error removing asset: {str(e)}")
+            return False
 
     def get_assets(self):
         """Load assets from database"""

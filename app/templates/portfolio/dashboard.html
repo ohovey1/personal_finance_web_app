@@ -20,30 +20,78 @@
             margin-left: 20px;
             padding: 5px;
         }
+        .remove-btn {
+            padding: 5px 10px;
+            background-color: #ff4444;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+        .remove-btn:hover {
+            background-color: #cc0000;
+        }
+        .add-btn {
+            padding: 8px 15px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 3px;
+            margin-right: 10px;
+        }
+        .add-btn:hover {
+            background-color: #45a049;
+        }
+        .back-btn {
+            padding: 8px 15px;
+            background-color: #008CBA;
+            color: white;
+            text-decoration: none;
+            border-radius: 3px;
+        }
+        .back-btn:hover {
+            background-color: #007399;
+        }
     </style>
 </head>
 <body>
     <h1>Your Portfolio</h1>
 
     <div class="nav-links">
-        <a href="{{ url_for('portfolio.add_account') }}">Add Account</a>
-        <a href="{{ url_for('home') }}">Back to Home</a>
+        <a href="{{ url_for('portfolio.add_account') }}" class="add-btn">Add Account</a>
+        <a href="{{ url_for('home') }}" class="back-btn">Back to Home</a>
     </div>
 
     {% if current_user.portfolio.accounts %}
         {% for account_id, account in current_user.portfolio.accounts.items() %}
             <div class="account">
-                <h2>{{ account.name }} ({{ account.account_type }})</h2>
-                <a href="{{ url_for('portfolio.add_asset', account_id=account_id) }}">Add Asset</a>
-                
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <h2>{{ account.name }} ({{ account.account_type }})</h2>
+                    <div>
+                        <a href="{{ url_for('portfolio.add_asset', account_id=account_id) }}" class="add-btn">Add Asset</a>
+                        <form method="POST" action="{{ url_for('portfolio.remove_account', account_id=account_id) }}" style="display: inline;">
+                            <button type="submit" class="remove-btn" onclick="return confirm('Are you sure you want to remove this account and all its assets?')">
+                                Remove Account
+                            </button>
+                        </form>
+                    </div>
+                </div>
                 <h3>Assets:</h3>
                 {% if account.holdings %}
                     {% for asset_id, asset in account.holdings.items() %}
                         <div class="asset">
-                            <p>{{ asset.name }} - Value: ${{ "%.2f"|format(asset.calculate_value()) }}</p>
+                            <p>
+                                {{ asset.name }} - Value: ${{ "%.2f"|format(asset.calculate_value()) }}
+                                <form method="POST" action="{{ url_for('portfolio.remove_asset', account_id=account_id, asset_id=asset_id) }}" style="display: inline;">
+                                    <button type="submit" class="remove-btn" onclick="return confirm('Are you sure you want to remove this asset?')">
+                                        Remove
+                                    </button>
+                                </form>
+                            </p>
                         </div>
                     {% endfor %}
-                    <p>Total Account Value: ${{ "%.2f"|format(account.calculate_total_value()) }}</p>
+                    <p><strong>Total Account Value: ${{ "%.2f"|format(account.calculate_total_value()) }}</strong></p>
                 {% else %}
                     <p>No assets in this account</p>
                 {% endif %}

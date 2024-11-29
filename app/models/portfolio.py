@@ -37,6 +37,18 @@ class Portfolio:
             self.accounts[account_id] = account
             return account_id
         return None
+    
+    def remove_account(self, account_id: int) -> bool:
+        """Removee account from portfolio and DB"""
+        query = "DELETE FROM Accounts WHERE account_id = %s AND portfolio_id = %s;"
+        try:
+            self.db.execute_query(query, (account_id, self.portfolio_id))
+            if account_id in self.accounts:
+                del self.accounts[account_id]
+            return True
+        except Exception as e:
+            print(f"Error removing account: {str(e)}")
+            return False
 
     def get_accounts(self) -> Dict[int, Account]:
         """Load accounts from database"""
