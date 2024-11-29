@@ -129,7 +129,7 @@ Uses PostgreSQL with the following structure:
 
 ## Next Steps:
 
-~~1. Add remove accounts/assets feature ~~
+1. Add remove accounts/assets feature ***DONE***
 2. Add visualizations for portfolio 
 3. Add API integration for real time stock and crypto prices 
 4. Enhance UI 
