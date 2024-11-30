@@ -1,10 +1,9 @@
 from flask_login import UserMixin
-from typing import Optional
 from .portfolio import Portfolio
 from ..database.db_connection import DatabaseConnection
 
 class User(UserMixin):
-    def __init__(self, user_id: Optional[int], name: str, email: str):
+    def __init__(self, user_id: int, name: str, email: str):
         self.id = user_id  # Flask-Login requires this to be named 'id'
         self.name = name
         self.email = email
@@ -34,7 +33,7 @@ class User(UserMixin):
             return False
 
     @classmethod
-    def get_by_email(cls, email: str) -> Optional['User']:
+    def get_by_email(cls, email: str):
         """Get user by email"""
         db = DatabaseConnection()
         query = "SELECT user_id, name, email FROM Users WHERE email = %s;"
@@ -53,7 +52,7 @@ class User(UserMixin):
         return None
 
     @classmethod
-    def get_by_id(cls, user_id: int) -> Optional['User']:
+    def get_by_id(cls, user_id: int):
         """Get user by ID"""
         db = DatabaseConnection()
         query = "SELECT user_id, name, email FROM Users WHERE user_id = %s;"
@@ -74,7 +73,7 @@ class User(UserMixin):
             return user
         return None
 
-    def verify_password(self, password: str) -> bool:
+    def verify_password(self, password: str):
         """Verify password"""
         query = "SELECT password FROM Users WHERE user_id = %s;"
         result = self.db.execute_query(query, (self.id,))

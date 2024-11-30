@@ -8,19 +8,19 @@ Methods:
     add_account(account): Add account to portfolio
     remove_account(account_id): Remove account from portfolio
 '''
-from typing import Dict, Optional
 from ..database.db_connection import DatabaseConnection
 from .account import Account
 from ..factories.account_factory import AccountFactory
+from ..visualizations.strategies import VisualizationStrategy
 
 class Portfolio:
-    def __init__(self, user_id: Optional[int] = None):
+    def __init__(self, user_id):
         self.portfolio_id = None
         self.user_id = user_id
-        self.accounts: Dict[int, Account] = {}
+        self.accounts = {}
         self.db = DatabaseConnection()
 
-    def add_account(self, account: Account) -> Optional[int]:
+    def add_account(self, account: Account):
         """Add account to portfolio and save to database"""
         query = """
         INSERT INTO Accounts (portfolio_id, name, account_type)
@@ -50,7 +50,7 @@ class Portfolio:
             print(f"Error removing account: {str(e)}")
             return False
 
-    def get_accounts(self) -> Dict[int, Account]:
+    def get_accounts(self):
         """Load accounts from database"""
         query = "SELECT * FROM Accounts WHERE portfolio_id = %s;"
         results = self.db.execute_query(query, (self.portfolio_id,))
@@ -89,7 +89,7 @@ class Portfolio:
         return False
 
     @classmethod
-    def get_by_user_id(cls, user_id: int) -> Optional['Portfolio']:
+    def get_by_user_id(cls, user_id: int):
         """Get portfolio by user ID"""
         db = DatabaseConnection()
         query = "SELECT portfolio_id FROM Portfolios WHERE user_id = %s;"
@@ -101,3 +101,7 @@ class Portfolio:
             portfolio.get_accounts()  # Load accounts and their assets
             return portfolio
         return None
+    
+    def generate_visualization(self, strategy : VisualizationStrategy):
+        """Using strategy pattern, generate visualization"""
+        return strategy.generate_visualization_data(self)

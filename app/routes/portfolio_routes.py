@@ -1,7 +1,11 @@
-from flask import Blueprint, render_template, request, redirect, url_for
+from flask import Blueprint, jsonify, render_template, request, redirect, url_for
 from flask_login import login_required, current_user
 from ..factories.account_factory import AccountFactory
 from ..factories.asset_factory import AssetFactory
+from ..visualizations.strategies import (
+    AssetBreakdownStrategy,
+    AccountBreakdownStrategy,
+)
 
 bp = Blueprint('portfolio', __name__, url_prefix='/portfolio')
 
@@ -79,3 +83,20 @@ def remove_account(account_id):
     if current_user.portfolio.remove_account(account_id):
         return redirect(url_for('portfolio.view_portfolio'))
     return "Error removing account", 400
+
+
+@bp.route('/visualize/<strategy_type>')
+@login_required
+def visualize_portfolio(strategy_type):
+    """Generate portfolio visualization based on strategy"""
+    strategies = {
+        'asset': AssetBreakdownStrategy(),
+        'account': AccountBreakdownStrategy(),
+    }
+    
+    strategy = strategies.get(strategy_type)
+    if not strategy:
+        return "Invalid strategy type", 400
+        
+    data = current_user.portfolio.generate_visualization(strategy) # Generate visualization using current user's portfolio
+    return jsonify(data)

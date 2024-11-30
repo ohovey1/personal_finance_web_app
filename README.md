@@ -20,7 +20,7 @@ project_root/
 │   │   |__ db_setup.sql     # SQL script to setup DB
 |   |   |__ clear_db.sql     # SQL script to clear DB
 │   │
-│   ├── models/             # Business logic
+│   ├── models/             # Backend class logic
 │   │   ├── __init__.py
 │   │   ├── user.py        # User model
 │   │   ├── portfolio.py   # Portfolio model
@@ -31,11 +31,18 @@ project_root/
 │   │   ├── __init__.py
 │   │   ├── account_factory.py
 │   │   └── asset_factory.py
+|   |   
+|   |__ visualizations
+|   |   |__ strategies     # Strategy pattern w/ visualization strategies
 │   │
 │   └── templates/         # HTML templates
 │       ├── auth/
 │       │   ├── login.html
 │       │   └── register.html
+|       |
+|       |__ portfolio
+|       |  |__ ...         # Templates for portfolio page
+|       |   
 │       └── home.html
 │
 ├── config.py              # Configuration settings
@@ -79,9 +86,8 @@ Home Page → View Portfolio → Add Account → Add Asset
 ## Design Patterns Used
 
 1. Factory Method Pattern - for Asset and Account creation
-2. Composition - exists between Portfolio and User objects
-3. Aggregation - exists between Assets and Accounts, as well as Accounts and Portfolio
-4. Singleton Pattern - for DB manager
+2. Strategy Pattern - to handle visualization stategies
+3. Singleton Pattern - for DB manager
 
 
 ## Database Schema
@@ -99,13 +105,6 @@ Uses PostgreSQL with the following structure:
 2. Account Management
 3. Database Integration
 4. Basic Web Interface
-
-## Features To Add
-
-1. Updated UI
-2. Real Time Data Integration for stock and crypto prices
-3. Portfolio displays and statistics
-4. Enhanced error handling
 
 ## Installation and Setup
 
@@ -130,7 +129,7 @@ Uses PostgreSQL with the following structure:
 ## Next Steps:
 
 1. Add remove accounts/assets feature ***DONE***
-2. Add visualizations for portfolio 
+2. Add visualizations for portfolio ***DONE***
 3. Add API integration for real time stock and crypto prices 
 4. Enhance UI 
 5. Other design patterns? Maybe observer 

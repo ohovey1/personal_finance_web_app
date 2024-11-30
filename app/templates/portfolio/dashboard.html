@@ -2,6 +2,7 @@
 <html>
 <head>
     <title>Portfolio Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         body { 
             font-family: Arial, sans-serif; 
@@ -101,5 +102,82 @@
     {% else %}
         <p>No accounts yet. Add an account to get started!</p>
     {% endif %}
+
+    <!-- Section for visualization -->
+    <div class="visualization-section">
+        <h2>Portfolio Visualizations</h2>
+        <div class="visualization-buttons">
+            <button onclick="loadVisualization('asset')">Asset Breakdown</button>
+            <button onclick="loadVisualization('account')">Account Breakdown</button>
+        </div>
+        <div class="chart-container">
+            <canvas id="portfolioChart"></canvas>
+        </div>
+    </div>
+
+    <!-- JavaScript for visualizations -->
+    <script>
+        // Keeps track of our current chart so we can update it
+        let currentChart = null;
+        
+        // This function is called when a button is clicked
+        async function loadVisualization(strategyType) {
+            // Fetch data from our backend route
+            const response = await fetch(`/portfolio/visualize/${strategyType}`);
+            const data = await response.json();
+            
+            // If we already have a chart, remove it before creating a new one
+            if (currentChart) {
+                currentChart.destroy();
+            }
+        
+            // Get the canvas element where we'll draw the chart
+            const ctx = document.getElementById('portfolioChart').getContext('2d');
+            
+            // Create different types of charts based on the strategy
+            let config;
+            if (strategyType === 'comparison') {
+                config = createBarChartConfig(data);
+            } else {
+                config = createPieChartConfig(data);
+            }
+            
+            // Create the new chart
+            currentChart = new Chart(ctx, config);
+        }
+        
+        // Configuration for pie charts (asset and account breakdowns)
+        function createPieChartConfig(data) {
+            return {
+                type: 'pie',
+                data: {
+                    labels: data.labels,  // Names of assets/accounts
+                    datasets: [{
+                        data: data.values,  // Values from our Python data
+                        backgroundColor: generateColors(data.labels.length)  // Colors for each slice
+                    }]
+                },
+                options: {
+                    responsive: true,  // Chart will resize with window
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: data.title
+                        }
+                    }
+                }
+            };
+        }
+        
+        // Generate colors for chart elements
+        function generateColors(count) {
+            // Predefine colors 
+            const colors = [
+                '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', 
+                '#9966FF', '#FF9F40', '#FF6384', '#36A2EB'
+            ];
+            return colors.slice(0, count);
+        }
+    </script>
 </body>
 </html>

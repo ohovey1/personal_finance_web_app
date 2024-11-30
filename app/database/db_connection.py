@@ -1,11 +1,10 @@
 # app/database/db_connection.py
 import psycopg2
 from psycopg2.extras import RealDictCursor
-from typing import Optional
 from config import Config
 
 class DatabaseConnection:
-    _instance: Optional['DatabaseConnection'] = None
+    _instance = None
     _connection = None
     _cursor = None
 

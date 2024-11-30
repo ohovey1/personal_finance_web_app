@@ -1,8 +1,4 @@
 from abc import ABC, abstractmethod
-from datetime import date
-from typing import Dict, Any
-
-from abc import ABC, abstractmethod
 
 class Asset(ABC):
     def __init__(self, name: str, units: float, purchase_price: float):
@@ -13,7 +9,7 @@ class Asset(ABC):
         self.current_price = purchase_price  # Initially same as purchase price until we add API
 
     @abstractmethod
-    def calculate_value(self) -> float:
+    def calculate_value(self):
         pass
 
 class Stock(Asset):

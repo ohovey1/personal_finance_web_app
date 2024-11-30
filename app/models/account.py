@@ -1,5 +1,4 @@
 from abc import ABC, abstractmethod
-from typing import Dict, Optional
 from ..database.db_connection import DatabaseConnection
 from .asset import Asset, Stock, Crypto, Cash
 
@@ -7,11 +6,11 @@ class Account(ABC):
     def __init__(self, name: str):
         self.account_id = None
         self.name = name
-        self.holdings: Dict[int, Asset] = {}
+        self.holdings = {}
         self.account_type = None  # Set by subclasses
         self.db = DatabaseConnection()
 
-    def add_asset(self, asset: Asset) -> Optional[int]:
+    def add_asset(self, asset: Asset):
         """Add asset to account and save to database"""
         query = """
         INSERT INTO Assets (account_id, name, asset_type, units, purchase_price, current_price)

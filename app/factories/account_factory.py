@@ -1,9 +1,8 @@
-from typing import Optional
 from ..models.account import Account, StockAccount, CryptoAccount, BankAccount
 
 class AccountFactory:
     @staticmethod
-    def create_account(account_type: str, name: str) -> Optional[Account]:
+    def create_account(account_type: str, name: str):
         """
         Create an account of specified type.
         

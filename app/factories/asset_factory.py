@@ -1,9 +1,8 @@
-from typing import Optional
 from ..models.asset import Asset, Stock, Crypto, Cash
 
 class AssetFactory:
     @staticmethod
-    def create_asset(asset_type: str, **kwargs) -> Optional[Asset]:
+    def create_asset(asset_type: str, **kwargs):
         """
         Create an asset of specified type.
         
