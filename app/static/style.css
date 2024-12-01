@@ -1,0 +1,146 @@
+body { 
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #1a1a1a;
+    color: #ffffff;
+}
+
+.dashboard-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #333;
+}
+
+.nav-links {
+    display: flex;
+    gap: 10px;
+}
+
+.nav-button {
+    padding: 8px 16px;
+    background-color: #2d2d2d;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background-color 0.3s;
+}
+
+.nav-button:hover {
+    background-color: #404040;
+}
+
+.accounts-scroll {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+    padding: 10px 0;
+    margin-bottom: 30px;
+}
+
+.account-card {
+    min-width: 300px;
+    background-color: #2d2d2d;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.account-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.account-title {
+    margin: 0;
+    color: #ffffff;
+}
+
+.account-type {
+    font-size: 0.9em;
+    color: #888;
+}
+
+.asset-list {
+    margin-top: 15px;
+}
+
+.asset-item {
+    padding: 8px 0;
+    border-bottom: 1px solid #404040;
+}
+
+.asset-item:last-child {
+    border-bottom: none;
+}
+
+.visualization-section {
+    background-color: #2d2d2d;
+    border-radius: 8px;
+    padding: 20px;
+    margin-top: 30px;
+}
+
+.visualization-buttons {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.viz-button {
+    padding: 8px 16px;
+    background-color: #404040;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.viz-button:hover {
+    background-color: #555;
+}
+
+.chart-container {
+    max-width: 600px;
+    margin: 0 auto;
+    background-color: #262626;
+    padding: 20px;
+    border-radius: 4px;
+}
+
+.total-value {
+    font-size: 1.2em;
+    color: #4CAF50;
+    margin-top: 10px;
+}
+
+/* Custom scrollbar for account scroll */
+.accounts-scroll::-webkit-scrollbar {
+    height: 8px;
+}
+
+.accounts-scroll::-webkit-scrollbar-track {
+    background: #1a1a1a;
+}
+
+.accounts-scroll::-webkit-scrollbar-thumb {
+    background: #404040;
+    border-radius: 4px;
+}
+
+.accounts-scroll::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}

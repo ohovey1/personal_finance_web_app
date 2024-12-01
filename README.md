@@ -126,10 +126,26 @@ Uses PostgreSQL with the following structure:
 
 6. To clear database, run app/database/clear_db.sql in database query tools (see step 3)
 
+## Example Usage:
+
+Step 1: Login or Register
+
+![alt text](images/welcome_page.png)
+
+Step 2: Add Account to Portfolio
+
+![alt text](images/dashboard1.png)
+
+Step 3: Add Account(s)
+
+![alt text](images/account_dashboard.png)
+
+Step 4: Add Assets to Account and Visualize
+
+![alt text](images/stocks.png.png)
+
+![alt text](images/pie_chart.png)
+
 ## Next Steps:
 
-1. Add remove accounts/assets feature ***DONE***
-2. Add visualizations for portfolio ***DONE***
-3. Add API integration for real time stock and crypto prices 
-4. Enhance UI 
-5. Other design patterns? Maybe observer 
+1. Add Real Time Stock Prices Integration

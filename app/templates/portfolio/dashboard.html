@@ -2,117 +2,79 @@
 <html>
 <head>
     <title>Portfolio Dashboard</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <style>
-        body { 
-            font-family: Arial, sans-serif; 
-            margin: 20px; 
-        }
-        .nav-links {
-            margin: 20px 0;
-        }
-        .account {
-            border: 1px solid #ddd;
-            padding: 15px;
-            margin: 10px 0;
-            border-radius: 5px;
-        }
-        .asset {
-            margin-left: 20px;
-            padding: 5px;
-        }
-        .remove-btn {
-            padding: 5px 10px;
-            background-color: #ff4444;
-            color: white;
-            border: none;
-            border-radius: 3px;
-            cursor: pointer;
-            margin-left: 10px;
-        }
-        .remove-btn:hover {
-            background-color: #cc0000;
-        }
-        .add-btn {
-            padding: 8px 15px;
-            background-color: #4CAF50;
-            color: white;
-            text-decoration: none;
-            border-radius: 3px;
-            margin-right: 10px;
-        }
-        .add-btn:hover {
-            background-color: #45a049;
-        }
-        .back-btn {
-            padding: 8px 15px;
-            background-color: #008CBA;
-            color: white;
-            text-decoration: none;
-            border-radius: 3px;
-        }
-        .back-btn:hover {
-            background-color: #007399;
-        }
-    </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- For pie charts-->
+    <script src="https://unpkg.com/lucide@latest"></script> <!-- Trash can icon-->
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
 </head>
 <body>
-    <h1>Your Portfolio</h1>
-
-    <div class="nav-links">
-        <a href="{{ url_for('portfolio.add_account') }}" class="add-btn">Add Account</a>
-        <a href="{{ url_for('home') }}" class="back-btn">Back to Home</a>
-    </div>
-
-    {% if current_user.portfolio.accounts %}
-        {% for account_id, account in current_user.portfolio.accounts.items() %}
-            <div class="account">
-                <div style="display: flex; justify-content: space-between; align-items: center;">
-                    <h2>{{ account.name }} ({{ account.account_type }})</h2>
-                    <div>
-                        <a href="{{ url_for('portfolio.add_asset', account_id=account_id) }}" class="add-btn">Add Asset</a>
-                        <form method="POST" action="{{ url_for('portfolio.remove_account', account_id=account_id) }}" style="display: inline;">
-                            <button type="submit" class="remove-btn" onclick="return confirm('Are you sure you want to remove this account and all its assets?')">
-                                Remove Account
-                            </button>
-                        </form>
-                    </div>
-                </div>
-                <h3>Assets:</h3>
-                {% if account.holdings %}
-                    {% for asset_id, asset in account.holdings.items() %}
-                        <div class="asset">
-                            <p>
-                                {{ asset.name }} - Value: ${{ "%.2f"|format(asset.calculate_value()) }}
-                                <form method="POST" action="{{ url_for('portfolio.remove_asset', account_id=account_id, asset_id=asset_id) }}" style="display: inline;">
-                                    <button type="submit" class="remove-btn" onclick="return confirm('Are you sure you want to remove this asset?')">
-                                        Remove
-                                    </button>
-                                </form>
-                            </p>
-                        </div>
-                    {% endfor %}
-                    <p><strong>Total Account Value: ${{ "%.2f"|format(account.calculate_total_value()) }}</strong></p>
-                {% else %}
-                    <p>No assets in this account</p>
-                {% endif %}
+    <div class="dashboard-container">
+        <div class="header">
+            <h1>Portfolio Dashboard</h1>
+            <div class="nav-links">
+                <a href="{{ url_for('portfolio.add_account') }}" class="nav-button">Add Account</a>
+                <a href="{{ url_for('home') }}" class="nav-button">Back to Home</a>
             </div>
-        {% endfor %}
-        <h3>Total Portfolio Value: ${{ "%.2f"|format(current_user.portfolio.calculate_total_value()) }}</h3>
-    {% else %}
-        <p>No accounts yet. Add an account to get started!</p>
-    {% endif %}
+        </div>
 
-    <!-- Section for visualization -->
-    <div class="visualization-section">
-        <h2>Portfolio Visualizations</h2>
-        <div class="visualization-buttons">
-            <button onclick="loadVisualization('asset')">Asset Breakdown</button>
-            <button onclick="loadVisualization('account')">Account Breakdown</button>
-        </div>
-        <div class="chart-container">
-            <canvas id="portfolioChart"></canvas>
-        </div>
+        {% if current_user.portfolio.accounts %}
+            <div class="accounts-scroll">
+                {% for account_id, account in current_user.portfolio.accounts.items() %}
+                    <div class="account-card">
+                        <div class="account-header">
+                            <div>
+                                <h2 class="account-title">{{ account.name }}</h2>
+                                <div class="account-type">{{ account.account_type }}</div>
+                            </div>
+                            <div>
+                                <a href="{{ url_for('portfolio.add_asset', account_id=account_id) }}" class="nav-button">Add Asset</a>
+                                <form method="POST" action="{{ url_for('portfolio.remove_account', account_id=account_id) }}" style="display: inline;">
+                                    <button type="submit" class="nav-button" style="padding: 4px; margin-left: 4px; height: 24px; width: 24px; display: inline-flex; align-items: center; justify-content: center;"
+                                    onclick="return confirm('Are you sure you want to remove this account and all its assets?')">
+                                        <i data-lucide="trash-2" style="width: 24px; height: 24px; color: #dc3545;"></i>
+                                </button>
+                                </form>
+                            </div>
+                        </div>
+                        
+                        {% if account.holdings %}
+                            <div class="asset-list">
+                                {% for asset_id, asset in account.holdings.items() %}
+                                    <div class="asset-item">
+                                        {{ asset.name }} - ${{ "%.2f"|format(asset.calculate_value()) }}
+                                        <form method="POST" action="{{ url_for('portfolio.remove_asset', account_id=account_id, asset_id=asset_id) }}" style="display: inline;">
+                                            <button type="submit" class="nav-button" style="padding: 4px 8px; font-size: 0.8em;"
+                                                    onclick="return confirm('Are you sure you want to remove this asset?')">
+                                                Remove
+                                            </button>
+                                        </form>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                            <div class="total-value">
+                                Total: ${{ "%.2f"|format(account.calculate_total_value()) }}
+                            </div>
+                        {% else %}
+                            <p>No assets in this account</p>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+            
+            <div class="visualization-section">
+                <h2>Portfolio Visualizations</h2>
+                <div class="visualization-buttons">
+                    <button class="viz-button" onclick="loadVisualization('asset')">Asset Breakdown</button>
+                    <button class="viz-button" onclick="loadVisualization('account')">Account Breakdown</button>
+                </div>
+                <div class="chart-container">
+                    <canvas id="portfolioChart"></canvas>
+                </div>
+            </div>
+        {% else %}
+            <p>No accounts yet. Add an account to get started!</p>
+        {% endif %}
     </div>
 
     <!-- JavaScript for visualizations -->
@@ -178,6 +140,9 @@
             ];
             return colors.slice(0, count);
         }
+        // For trash icon
+        lucide.createIcons();
+
     </script>
 </body>
 </html>
