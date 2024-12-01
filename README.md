@@ -124,7 +124,7 @@ Uses PostgreSQL with the following structure:
 
 ## Example Usage:
 
-<center>
+<div align="center">
 
 Step 1: Login or Register
 
@@ -144,7 +144,7 @@ Step 4: Add Assets to Account and Visualize
 
 ![alt text](images/pie_chart.png)
 
-</center>
+</div>
 
 ## Next Steps:
 
