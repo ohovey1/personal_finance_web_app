@@ -100,7 +100,7 @@ Uses PostgreSQL with the following structure:
 1. User Authentication
 2. Account Management
 3. Database Integration
-4. Basic Web Interface
+4. Multiple Portfolio Visualizations
 
 ## Installation and Setup
 
