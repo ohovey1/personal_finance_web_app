@@ -142,7 +142,7 @@ Step 3: Add Account(s)
 
 Step 4: Add Assets to Account and Visualize
 
-![alt text](images/stocks.png.png)
+![alt text](images/stocks.png)
 
 ![alt text](images/pie_chart.png)
 
