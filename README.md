@@ -124,6 +124,8 @@ Uses PostgreSQL with the following structure:
 
 ## Example Usage:
 
+<center>
+
 Step 1: Login or Register
 
 ![alt text](images/welcome_page.png)
@@ -141,6 +143,8 @@ Step 4: Add Assets to Account and Visualize
 ![alt text](images/stocks.png)
 
 ![alt text](images/pie_chart.png)
+
+</center>
 
 ## Next Steps:
 
