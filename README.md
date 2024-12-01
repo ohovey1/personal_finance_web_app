@@ -9,45 +9,17 @@ A web application that allows users to manage their financial portfolio, includi
 project_root/
 │
 ├── app/
-│   ├── __init__.py          # Flask application initialization
-│   ├── routes/              # API endpoints
-│   │   ├── __init__.py
-│   │   └── auth_routes.py   # Authentication routes
-│   │
-│   ├── database/            # Database management
-│   │   ├── __init__.py
-│   │   ├── db_connection.py # Database singleton
-│   │   |__ db_setup.sql     # SQL script to setup DB
-|   |   |__ clear_db.sql     # SQL script to clear DB
-│   │
-│   ├── models/             # Backend class logic
-│   │   ├── __init__.py
-│   │   ├── user.py        # User model
-│   │   ├── portfolio.py   # Portfolio model
-│   │   ├── account.py     # Account models
-│   │   └── asset.py       # Asset models
-│   │
-│   ├── factories/         # Factory pattern implementation
-│   │   ├── __init__.py
-│   │   ├── account_factory.py
-│   │   └── asset_factory.py
-|   |   
-|   |__ visualizations
-|   |   |__ strategies     # Strategy pattern w/ visualization strategies
-│   │
-│   └── templates/         # HTML templates
-│       ├── auth/
-│       │   ├── login.html
-│       │   └── register.html
-|       |
-|       |__ portfolio
-|       |  |__ ...         # Templates for portfolio page
-|       |   
-│       └── home.html
+│   ├── __init__.py           # Flask application initialization
+│   ├── routes/               # API endpoints
+│   ├── database/             # Database management
+│   ├── models/              # Model logic (accounts, assets, etc.)
+│   ├── factories/           # Factory method implementations
+│   ├── visualizations/      # Visualization strategies (strategy pattern)
+│   ├── static/              # CSS files
+│   └── templates/           # HTML templates
 │
-├── config.py              # Configuration settings
-└── run.py                # Application entry point
-|__ requirements.txt
+├── config.py               # Configuration settings
+└── run.py                 # Application entry point
 ```
 
 ## OOP Design
@@ -83,7 +55,7 @@ Home Page → View Portfolio → Add Account → Add Asset
 
 1. Factory Method Pattern - for Asset and Account creation
 2. Strategy Pattern - to handle visualization stategies
-3. Singleton Pattern - for DB manager
+3. Singleton Pattern - for database manager
 
 
 ## Database Schema
@@ -146,6 +118,29 @@ Uses PostgreSQL with the following structure:
 
 </div>
 
-## Next Steps:
 
-1. Add Real Time Stock Prices Integration
+## Benefits to Our System:
+
+1. **Maintainability and Extensibility**
+
+Our application is structured in a way making it very easy to maintain and extend. There is a clean seperation of concerns so various aspects of the project are isolated. Furthermore, the use of Factory Method and Strategy design patterns allow for very easy extension without manipulation of existing code.
+
+2. **User Benefits:**
+
+Our application offers intuitive user flow that allows users to easily navigate the application. Our applications offers numerous visualizations that allows for users to easily view their data. As for security, our login system can easily be extended to support robust authentication practices before deployment.
+
+3. **Data Integreity:**
+
+Another key benefits of the system is how application data is handled. The singleton pattern ensures consistent database connections. Furthermore, object creation is done in a way so that data is consistent across the database. For example, if an account object is deleted, all of the assets belonging to the account are deleted as well.
+
+
+## Features to Add:
+
+1. Stock/Crypto API Integration
+2. Further Portfolio Visualizations
+3. Additional Asset Support
+
+
+## Conclusion
+
+Our portfolio management system combines technical excellence with practical usability. Its thoughtful architecture ensures it can grow and adapt while maintaining reliability and performance. The focus on clean design patterns and separation of concerns makes it both maintainable and extensible, while the user-focused interface design ensures it delivers real value to end users.
