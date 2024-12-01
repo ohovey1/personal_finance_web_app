@@ -13,7 +13,7 @@ project_root/
 │   ├── routes/               # API endpoints
 │   ├── database/             # Database management
 │   ├── models/              # Model logic (accounts, assets, etc.)
-│   ├── factories/           # Factory method implementations
+│   ├── factories/           # Factory implementations (factory pattern)
 │   ├── visualizations/      # Visualization strategies (strategy pattern)
 │   ├── static/              # CSS files
 │   └── templates/           # HTML templates
