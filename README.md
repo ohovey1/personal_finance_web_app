@@ -126,19 +126,19 @@ Uses PostgreSQL with the following structure:
 
 <div align="center">
 
-Step 1: Login or Register
+### Step 1: Login or Register
 
 ![alt text](images/welcome_page.png)
 
-Step 2: Add Account to Portfolio
+### Step 2: Add Account to Portfolio
 
 ![alt text](images/dashboard1.png)
 
-Step 3: Add Account(s)
+### Step 3: Add Account(s)
 
 ![alt text](images/account_dashboard.png)
 
-Step 4: Add Assets to Account and Visualize
+### Step 4: Add Assets to Account and Visualize
 
 ![alt text](images/stocks.png)
 
