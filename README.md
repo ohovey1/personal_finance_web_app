@@ -143,4 +143,4 @@ Another key benefits of the system is how application data is handled. The singl
 
 ## Conclusion
 
-Our portfolio management system combines technical excellence with practical usability. Its thoughtful architecture ensures it can grow and adapt while maintaining reliability and performance. The focus on clean design patterns and separation of concerns makes it both maintainable and extensible, while the user-focused interface design ensures it delivers real value to end users.
+Our portfolio management system combines technical robustness with practical usability. Its architecture ensures easy extension while maintaining reliability and performance. The focus on clean design patterns and separation of concerns makes it both maintainable and extensible, while the user-focused interface design ensures it delivers real value to users.
