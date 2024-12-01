@@ -77,7 +77,6 @@ User flow:
 Home Page → View Portfolio → Add Account → Add Asset
                 ↑_______________←______________↲
 ```
-![alt text](images/uml_diagram.jpeg)
 
 
 ## Design Patterns Used
