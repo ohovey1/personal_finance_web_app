@@ -51,7 +51,7 @@ class Portfolio:
             return False
 
     def get_accounts(self):
-        """Load accounts from database"""
+        """Load accounts from database, for debugging purposes"""
         query = "SELECT * FROM Accounts WHERE portfolio_id = %s;"
         results = self.db.execute_query(query, (self.portfolio_id,))
         
@@ -103,5 +103,5 @@ class Portfolio:
         return None
     
     def generate_visualization(self, strategy : VisualizationStrategy):
-        """Using strategy pattern, generate visualization"""
+        """Using strategy pattern, generate visualization. Accepts strategy"""
         return strategy.generate_visualization_data(self)

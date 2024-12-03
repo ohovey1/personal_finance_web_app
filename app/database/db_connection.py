@@ -31,7 +31,7 @@ class DatabaseConnection:
             print(f"Error connecting to database: {e}")
             raise
 
-    def execute_query(self, query: str, params: tuple = None):
+    def execute_query(self, query, params):
         """Execute a query and return results"""
         try:
             self._cursor.execute(query, params)

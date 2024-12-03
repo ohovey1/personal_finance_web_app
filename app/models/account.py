@@ -72,6 +72,9 @@ class Account(ABC):
     def calculate_total_value(self) -> float:
         pass
 
+
+## Concrete Account classes
+
 class StockAccount(Account):
     def __init__(self, name: str):
         super().__init__(name)

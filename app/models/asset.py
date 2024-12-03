@@ -12,6 +12,8 @@ class Asset(ABC):
     def calculate_value(self):
         pass
 
+## Concrete Assets
+
 class Stock(Asset):
     def __init__(self, name: str, ticker: str, units: float, purchase_price: float):
         super().__init__(name, units, purchase_price)

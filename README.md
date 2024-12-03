@@ -127,7 +127,7 @@ Our application is structured in a way making it very easy to maintain and exten
 
 Our application offers intuitive user flow that allows users to easily navigate the application. Our applications offers numerous visualizations that allows for users to easily view their data. As for security, our login system can easily be extended to support robust authentication practices before deployment.
 
-3. **Data Integreity:**
+3. **Data Integrity:**
 
 Another key benefits of the system is how application data is handled. The singleton pattern ensures consistent database connections. Furthermore, object creation is done in a way so that data is consistent across the database. For example, if an account object is deleted, all of the assets belonging to the account are deleted as well.
 
